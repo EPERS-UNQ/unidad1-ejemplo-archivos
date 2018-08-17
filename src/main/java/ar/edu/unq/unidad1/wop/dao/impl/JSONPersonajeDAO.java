@@ -15,7 +15,6 @@ import ar.edu.unq.unidad1.wop.modelo.Personaje;
  * del {@link Personaje} (es decir, el {@link Personaje} y sus {@link Item})
  * en un archivo binario
  * 
- * @author cf
  */
 public class JSONPersonajeDAO extends BaseFileDAO implements PersonajeDAO {
 

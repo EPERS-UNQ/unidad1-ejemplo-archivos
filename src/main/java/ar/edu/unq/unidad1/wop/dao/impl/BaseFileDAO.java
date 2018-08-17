@@ -14,7 +14,6 @@ import java.nio.file.Files;
  * y cerrar el archivo, etc). Ese codigo repetido NO deberia existir
  * ya que deberia ser responsabilidad de estar super clase.
  * 
- * @author Claudio Fernandez
  */
 public class BaseFileDAO {
 	
