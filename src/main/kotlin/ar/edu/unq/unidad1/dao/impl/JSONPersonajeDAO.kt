@@ -10,34 +10,27 @@ import java.io.IOException
 /**
  * Esta implementacion de [PersonajeDAO] persistirá toda la agregación
  * del [Personaje] (es decir, el [Personaje] y sus [Item])
- * en un archivo binario
+ * en un archivo JSON
  *
  */
 class JSONPersonajeDAO : BaseFileDAO("json"), PersonajeDAO {
     private val mapper: ObjectMapper = ObjectMapper()
 
+    init {
+        mapper.enable(SerializationFeature.INDENT_OUTPUT)
+    }
+
     override fun guardar(personaje: Personaje) {
         val dataFile: File = getStorage(personaje.nombre)
         deleteIfExists(dataFile)
-        try {
-            mapper.writeValue(dataFile, personaje)
-        } catch (e: IOException) {
-            throw RuntimeException("No se puede guardar " + personaje.nombre, e)
-        }
+        mapper.writeValue(dataFile, personaje)
     }
 
     override fun recuperar(nombre: String): Personaje? {
         val dataFile: File = getStorage(nombre)
-        return if (!dataFile.exists()) {
-            null
-        } else try {
-            mapper.readValue(dataFile, Personaje::class.java)
-        } catch (e: IOException) {
-            throw RuntimeException("No se puede recuperar $nombre", e)
+        if (!dataFile.exists()) {
+            return null
         }
-    }
-
-    init {
-        mapper.enable(SerializationFeature.INDENT_OUTPUT)
+        return mapper.readValue(dataFile, Personaje::class.java)
     }
 }

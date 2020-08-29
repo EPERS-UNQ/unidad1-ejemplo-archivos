@@ -11,36 +11,34 @@ import java.io.IOException
 /**
  * Esta implementacion de [PersonajeDAO] persistirá toda la agregación
  * del [Personaje] (es decir, el [Personaje] y sus [Item])
- * en un archivo binario
+ * en un archivo XML
  *
  */
 class XMLPersonajeDAO : BaseFileDAO("xml"), PersonajeDAO {
     private val xstream: XStream
+
+    init {
+        xstream = XStream(StaxDriver())
+        xstream.allowTypesByRegExp(arrayOf( ".*" ));
+        xstream.processAnnotations(Personaje::class.java)
+        xstream.processAnnotations(Item::class.java)
+    }
+
     override fun guardar(personaje: Personaje) {
         val dataFile = getStorage(personaje.nombre)
         deleteIfExists(dataFile)
-        try {
-            FileOutputStream(dataFile).use { stream -> xstream.toXML(personaje, stream) }
-        } catch (e: IOException) {
-            throw RuntimeException("No se puede guardar " + personaje.nombre, e)
-        }
+
+        FileOutputStream(dataFile)
+            .use { stream -> xstream.toXML(personaje, stream) }
     }
 
     override fun recuperar(nombre: String): Personaje? {
         val dataFile = getStorage(nombre)
-        return if (!dataFile.exists()) {
+        if (!dataFile.exists()) {
             // No existe el personaje
-            null
-        } else try {
-            xstream.fromXML(dataFile) as Personaje
-        } catch (e: Exception) {
-            throw RuntimeException("No se puede recuperar $nombre", e)
+            return null
         }
+        return xstream.fromXML(dataFile) as Personaje
     }
 
-    init {
-        xstream = XStream(StaxDriver())
-        xstream.processAnnotations(Personaje::class.java)
-        xstream.processAnnotations(Item::class.java)
-    }
 }

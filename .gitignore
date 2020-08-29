@@ -2,7 +2,9 @@
 .settings
 .project
 /target
-/data/*
+/data/Maguito.json
+/data/Maguito.bin
+/data/Maguito.xml
 .gradle/
 build/*
 .idea

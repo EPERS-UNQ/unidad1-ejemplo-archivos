@@ -16,25 +16,17 @@ class NativePersonajeDAO : BaseFileDAO("bin"), PersonajeDAO {
         deleteIfExists(dataFile)
 
         //Resource block - asegura que stream.close() se llama en todos los casos
-        try {
-            ObjectOutputStream(FileOutputStream(dataFile)).use { stream -> stream.writeObject(personaje) }
-        } catch (e: IOException) {
-            throw RuntimeException("No se puede guardar " + personaje.nombre, e)
-        }
+        ObjectOutputStream(FileOutputStream(dataFile))
+            .use { stream -> stream.writeObject(personaje) }
     }
 
     override fun recuperar(nombre: String): Personaje? {
         val dataFile = getStorage(nombre)
         if (!dataFile.exists()) {
-            // No existe el personaje
+            // No existe el personajeØ
             return null
         }
-        try {
-            ObjectInputStream(FileInputStream(dataFile)).use { stream -> return stream.readObject() as Personaje }
-        } catch (e: IOException) {
-            throw RuntimeException("No se puede recuperar $nombre", e)
-        } catch (e: ClassNotFoundException) {
-            throw RuntimeException("No se puede recuperar $nombre", e)
-        }
+        ObjectInputStream(FileInputStream(dataFile))
+            .use { stream -> return stream.readObject() as Personaje }
     }
 }
