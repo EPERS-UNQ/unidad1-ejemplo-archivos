@@ -2,9 +2,12 @@ package ar.edu.unq.unidad1.dao
 
 import ar.edu.unq.unidad1.modelo.Item
 import ar.edu.unq.unidad1.modelo.Personaje
-import org.junit.Assert
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInstance
+import org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS
+
 
 /**
  * TODO: Esta es una implementacion sencilla que tiene como objeto
@@ -16,6 +19,7 @@ import org.junit.Test
  * sin demasiada complicacion, pero el codigo repetido NO deberia existir.
  *
  */
+@TestInstance(PER_CLASS)
 abstract class PersonajeDAOTest {
     private val dao: PersonajeDAO
     lateinit var maguito: Personaje
@@ -24,7 +28,7 @@ abstract class PersonajeDAOTest {
         dao = createDAO()
     }
 
-    @Before
+    @BeforeAll
     fun crearModelo() {
         maguito = Personaje("Maguito")
         maguito.pesoMaximo = 15
@@ -40,16 +44,16 @@ abstract class PersonajeDAOTest {
 
         //Los personajes son iguales
         val otroMaguito = dao.recuperar("Maguito")
-        Assert.assertEquals(maguito.nombre, otroMaguito!!.nombre)
-        Assert.assertEquals(maguito.pesoMaximo, otroMaguito.pesoMaximo)
-        Assert.assertEquals(maguito.vida, otroMaguito.vida)
-        Assert.assertEquals(maguito.xp, otroMaguito.xp)
-        Assert.assertEquals(maguito.inventario.size.toLong(), otroMaguito.inventario.size.toLong()
+        Assertions.assertEquals(maguito.nombre, otroMaguito!!.nombre)
+        Assertions.assertEquals(maguito.pesoMaximo, otroMaguito.pesoMaximo)
+        Assertions.assertEquals(maguito.vida, otroMaguito.vida)
+        Assertions.assertEquals(maguito.xp, otroMaguito.xp)
+        Assertions.assertEquals(maguito.inventario.size.toLong(), otroMaguito.inventario.size.toLong()
         )
 
         //Pero no son el mismo objeto =(
         //A esto nos referimos con "perdida de identidad"
-        Assert.assertTrue(maguito != otroMaguito)
+        Assertions.assertTrue(maguito != otroMaguito)
     }
 
     abstract fun createDAO(): PersonajeDAO
