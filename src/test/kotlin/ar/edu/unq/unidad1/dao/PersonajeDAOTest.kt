@@ -39,7 +39,7 @@ abstract class PersonajeDAOTest {
     }
 
     @Test
-    fun al_guardar_y_luego_recuperar_se_obtiene_objetos_similares() {
+    fun `al guardar y luego recuperar se obtiene objetos similares`() {
         dao.guardar(maguito)
 
         //Los personajes son iguales
