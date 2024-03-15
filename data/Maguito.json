@@ -1,0 +1,13 @@
+{
+  "nombre" : "Maguito",
+  "pesoMaximo" : 15,
+  "xp" : 2500,
+  "vida" : 198,
+  "inventario" : [ {
+    "nombre" : "Tunica gris",
+    "peso" : 1
+  }, {
+    "nombre" : "Baculo gris",
+    "peso" : 5
+  } ]
+}
